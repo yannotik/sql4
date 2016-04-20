@@ -1,0 +1,41 @@
+CREATE TABLE currency_exchange(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id_currency INT NOT NULL ,
+	value decimal(7,5) NOT NULL,
+	d_time DATETIME
+);
+
+CREATE TABLE currency(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	code_currency VARCHAR(10) NOT NULL 
+);
+
+ALTER TABLE currency_exchange FOREING KEY id_currency REFERENCES currency(id);
+
+INSERT INTO currency(code_currency) VALUES('USD');
+INSERT INTO currency(code_currency) VALUES('EUR');
+INSERT INTO currency(code_currency) VALUES('RUB';
+
+INSERT INTO currency_exchange(id_currency, value, d_time) VALUES(1, 25.45, '2016-04-18 12:00:00');
+INSERT INTO currency_exchange(id_currency, value, d_time) VALUES(2, 28.77, '2016-04-18 12:00:00');
+INSERT INTO currency_exchange(id_currency, value, d_time) VALUES(3, 0.3736, '2016-04-18 12:00:00');
+
+
+
+1.
+SELECT c2.code_currency, c1.price, c1.d_time
+FROM currency_exchange c1
+JOIN currency c2 ON c1.id_currency = c2.id
+WHERE id_currency = 1 AND d_time > '2016-04-18 00:00:00' AND d_time < '2016-04-18 23:59:59'
+
+2. 
+SELECT c2.code_currency, MAX(price)
+FROM currency_exchange c1
+JOIN currency c2 ON c1.id_currency = c2.id
+WHERE c1.price = (SELECT MAX(price) FROM currency_exchange)
+
+3. 
+SELECT c2.code_currency, c1.price, MAX(c1.d_time) 
+FROM currency_exchange c1 
+JOIN currency c2 ON c1.id_currency = c2.id
+GROUP BY c1.id_currency
